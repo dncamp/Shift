@@ -1,0 +1,182 @@
+<!DOCTYPE html>
+<html lang="" xml:lang="">
+<head>
+
+  <meta charset="utf-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <title>Chapter 3 wOBA | How Effective is the Shift?</title>
+  <meta name="description" content="Chapter 3 wOBA | How Effective is the Shift?" />
+  <meta name="generator" content="bookdown 0.21 and GitBook 2.6.7" />
+
+  <meta property="og:title" content="Chapter 3 wOBA | How Effective is the Shift?" />
+  <meta property="og:type" content="book" />
+  
+  
+  
+  
+
+  <meta name="twitter:card" content="summary" />
+  <meta name="twitter:title" content="Chapter 3 wOBA | How Effective is the Shift?" />
+  
+  
+  
+
+<meta name="author" content="James Ding" />
+
+
+<meta name="date" content="2021-01-20" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-status-bar-style" content="black" />
+  
+  
+<link rel="prev" href="balls-in-play.html"/>
+<link rel="next" href="three-true-outcomes.html"/>
+<script src="libs/jquery-2.2.3/jquery.min.js"></script>
+<link href="libs/gitbook-2.6.7/css/style.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-table.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-bookdown.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-highlight.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-search.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-fontsettings.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-clipboard.css" rel="stylesheet" />
+
+
+
+
+
+
+
+
+
+<script src="libs/accessible-code-block-0.0.1/empty-anchor.js"></script>
+
+
+
+<link rel="stylesheet" href="style.css" type="text/css" />
+</head>
+
+<body>
+
+
+
+  <div class="book without-animation with-summary font-size-2 font-family-1" data-basepath=".">
+
+    <div class="book-summary">
+      <nav role="navigation">
+
+<ul class="summary">
+<li><a href="./">How Effective is the Shift?</a></li>
+
+<li class="divider"></li>
+<li class="chapter" data-level="1" data-path="index.html"><a href="index.html"><i class="fa fa-check"></i><b>1</b> Introduction</a><ul>
+<li class="chapter" data-level="1.1" data-path="index.html"><a href="index.html#what-is-the-shift"><i class="fa fa-check"></i><b>1.1</b> What is the shift?</a></li>
+</ul></li>
+<li class="chapter" data-level="2" data-path="balls-in-play.html"><a href="balls-in-play.html"><i class="fa fa-check"></i><b>2</b> Balls In Play</a></li>
+<li class="chapter" data-level="3" data-path="woba.html"><a href="woba.html"><i class="fa fa-check"></i><b>3</b> wOBA</a><ul>
+<li class="chapter" data-level="3.1" data-path="woba.html"><a href="woba.html#what-is-woba"><i class="fa fa-check"></i><b>3.1</b> What is wOBA?</a></li>
+<li class="chapter" data-level="3.2" data-path="woba.html"><a href="woba.html#xwoba"><i class="fa fa-check"></i><b>3.2</b> xWOBA</a></li>
+</ul></li>
+<li class="chapter" data-level="4" data-path="three-true-outcomes.html"><a href="three-true-outcomes.html"><i class="fa fa-check"></i><b>4</b> Three True Outcomes</a><ul>
+<li class="chapter" data-level="4.1" data-path="three-true-outcomes.html"><a href="three-true-outcomes.html#launch-angle"><i class="fa fa-check"></i><b>4.1</b> Launch Angle</a></li>
+<li class="chapter" data-level="4.2" data-path="three-true-outcomes.html"><a href="three-true-outcomes.html#three-true-outcomes-1"><i class="fa fa-check"></i><b>4.2</b> Three True Outcomes</a></li>
+</ul></li>
+<li class="chapter" data-level="5" data-path="conclusion.html"><a href="conclusion.html"><i class="fa fa-check"></i><b>5</b> Conclusion</a></li>
+<li class="divider"></li>
+<li><a href="https://github.com/rstudio/bookdown" target="blank">Published with bookdown</a></li>
+</ul>
+
+      </nav>
+    </div>
+
+    <div class="book-body">
+      <div class="body-inner">
+        <div class="book-header" role="navigation">
+          <h1>
+            <i class="fa fa-circle-o-notch fa-spin"></i><a href="./">How Effective is the Shift?</a>
+          </h1>
+        </div>
+
+        <div class="page-wrapper" tabindex="-1" role="main">
+          <div class="page-inner">
+
+            <section class="normal" id="section-">
+<div id="woba" class="section level1">
+<h1><span class="header-section-number">Chapter 3</span> wOBA</h1>
+<p>While batting average used to be considered one of the most important statistics in baseball, nowadays front office staff have realized its flaws. General Managers now like to use more advanced analytics to determine a players offensive capabilities. Perhaps one of these metrics can be used to show the value of the shift.</p>
+<div id="what-is-woba" class="section level2">
+<h2><span class="header-section-number">3.1</span> What is wOBA?</h2>
+<p>Weighted On-Base Average (wOBA) is a statistic that aims to correct some of the flaws of batting average and on-base percentage by assigning a different value for different results. For example, since hitting a home run is better than hitting a single, a home run is weighted more than a single when calculating wOBA. For more information about the statistic, visit this fangraphs site detailing the calculation and usage of wOBA: <a href="https://library.fangraphs.com/offense/woba/" class="uri">https://library.fangraphs.com/offense/woba/</a></p>
+<p>wOBA is used as part of many different advanced analytics in baseball, such as wRC+ and WAR, so teams may be using wOBA to determine the effectiveness of the infield shift.</p>
+<p><img src="bookdownproj_files/figure-html/unnamed-chunk-8-1.png" width="672" /></p>
+<p>The above graph uses data of players who faced the shift at least 100 times in 2020, so it is surprising that teams chose to utilize the shift against these players even though there is no clear relationship. However, using even more advanced analytics, we can take a deeper dive into the wOBA</p>
+</div>
+<div id="xwoba" class="section level2">
+<h2><span class="header-section-number">3.2</span> xWOBA</h2>
+<p>Expected wOBA (xwOBA) is a metric created by MLB’s Statcast that uses predicted outcomes of balls put into play rather than actual results. Imagine if the batter hits a scorching line drive into the gap, but the defender makes a great diving catch to rob the batter of the hit. While wOBA would credit the batter with an out, xwOBA would recognize that the play results in a hit the majority of the time. This makes xwOBA excellent in predicting future player performance, especially with a small sample size. For more information about xwOBA, check out this blog post from MLB’s technology team: <a href="https://technology.mlblogs.com/an-introduction-to-expected-weighted-on-base-average-xwoba-29d6070ba52b" class="uri">https://technology.mlblogs.com/an-introduction-to-expected-weighted-on-base-average-xwoba-29d6070ba52b</a></p>
+<p>The three variables used by Statcast to predict batted ball results are exit velocity, launch angle, and sprint speed. Notably, the model does not take into account defensive alignments, leading to many incorrect predictions for balls hit against the infield shift. Using xwOBA as a proxy for how the players would perform against standard defensive alignments, we can see if the shift has a significant effect on the player’s actual performance.</p>
+<p><img src="bookdownproj_files/figure-html/unnamed-chunk-9-1.png" width="672" /></p>
+<p>The line on the graph marks where wOBA equals xwOBA, so it seems that even against the shift batters generally performed as expected, even though the model used for predictions does not take into account defensive alignment. It seems that batters who face the shift often would perform similarly against a standard defensive alignment. Most likely, batters have adjusted their approach to hitting due to the prevalence of the shift.</p>
+
+</div>
+</div>
+            </section>
+
+          </div>
+        </div>
+      </div>
+<a href="balls-in-play.html" class="navigation navigation-prev " aria-label="Previous page"><i class="fa fa-angle-left"></i></a>
+<a href="three-true-outcomes.html" class="navigation navigation-next " aria-label="Next page"><i class="fa fa-angle-right"></i></a>
+    </div>
+  </div>
+<script src="libs/gitbook-2.6.7/js/app.min.js"></script>
+<script src="libs/gitbook-2.6.7/js/lunr.js"></script>
+<script src="libs/gitbook-2.6.7/js/clipboard.min.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-search.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-sharing.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-fontsettings.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-bookdown.js"></script>
+<script src="libs/gitbook-2.6.7/js/jquery.highlight.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-clipboard.js"></script>
+<script>
+gitbook.require(["gitbook"], function(gitbook) {
+gitbook.start({
+"sharing": {
+"github": false,
+"facebook": true,
+"twitter": true,
+"linkedin": false,
+"weibo": false,
+"instapaper": false,
+"vk": false,
+"all": ["facebook", "twitter", "linkedin", "weibo", "instapaper"]
+},
+"fontsettings": {
+"theme": "white",
+"family": "sans",
+"size": 2
+},
+"edit": {
+"link": "https://github.com/dncamp/shift/edit/master/03-wOBA.Rmd",
+"text": "Edit"
+},
+"history": {
+"link": null,
+"text": null
+},
+"view": {
+"link": "https://github.com/dncamp/shift/blob/master/03-wOBA.Rmd",
+"text": null
+},
+"download": null,
+"toc": {
+"collapse": "subsection"
+}
+});
+});
+</script>
+
+</body>
+
+</html>

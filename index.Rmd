@@ -1,9 +1,14 @@
 --- 
-title: "YOUR TITLE HERE"
-author: "YOUR NAME HERE"
+title: "How Effective is the Shift?"
+author: "James Ding"
 date: "`r Sys.Date()`"
 site: bookdown::bookdown_site
 ---
 
-# Down the rabbit-hole
+# Introduction
 
+As critics of Major League Baseball bemoan its slow pace of play and lack of action, one particular strategy has come under heavy scrutiny: the infield shift. While rarely utilized just a decade ago, in the 2020 MLB season teams utilized the shift in 34.1% of all plate appearances, according to Statcast. Advocates for the shift will point to the added strategy that the shift brings, and will point out that hitters should just learn to hit to the opposite field or bunt to counter the shift. On the other hand, critics will point out that the league is currently experiencing a historically low batting average due to the shift. Many media members have even advocated for banning the infield shift. However, to fully understand the effect of banning the shift, we need to understand what effect the shift has on the game of baseball.
+
+## What is the shift?
+
+Before we dive into the data and analytics, we need to formally define the infield shift. In a standard defensive alignment, the first baseman and the second baseman are positioned between first and second base, while the shortstop and third baseman are positioned between second and third base. Colloquially, when people mention the shift, they are referring to the defensive alignment where three infielders are on one side of second base. While there are technically many other types of shifts, such as moving the first and third basemen closer to the foul lines to "guard the lines," these shifts have not received nearly as much controversy as the alignment where three infielders are on one side of second base. Furthermore, most of the proposed rules to prevent shifting focus on restricting defenses to two infielders on each side of second base. As such, these shifts will not receive much discussion in this exploration.

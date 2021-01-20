@@ -1,0 +1,84 @@
+# Balls In Play
+
+```{r, echo = FALSE, message=FALSE, warning=FALSE}
+library(tidyverse)
+bap = read_csv("balls-in-play.csv", na = c("", "NA", "null"))
+bap <- bap %>% drop_na(if_fielding_alignment)
+bap$if_fielding_alignment <- as.factor(bap$if_fielding_alignment) %>% fct_relevel("Standard")
+bap$description <- bap$description %>% fct_recode("out" = "hit_into_play", "hit" = "hit_into_play_no_out")
+```
+
+The main idea behind the shift is to get outs on ground balls and line drives that would normally be hits with a standard defensive alignment. Therefore, when evaluating the shift, we may want to focus on balls put into play.
+
+```{r, echo = FALSE, message=FALSE,warning=FALSE}
+hits <- bap %>% group_by(if_fielding_alignment, description) %>%  summarise(count = n()) %>% mutate(perc = count/sum(count))
+ggplot(hits, aes(x = if_fielding_alignment, y=perc*100, fill = description)) +
+  geom_bar(stat = "identity") +
+  ggtitle("Proportion of Hits for Each Alignment") +
+  ylab("Percent") +
+  xlab("Infield Alignment") +
+  theme_classic(14)
+```
+
+On the surface, it seems that the shift has no effect in preventing hits. (Note: Strategic is a catch-all term that Statcast uses for all non-standard defensive alignments that do not have three infielders on one side of second base). However, the infield shift is only effective at stopping hits from ground balls and line drives. If we restrict our sample to those two, we get the following graph:
+
+```{r, echo = FALSE, message=FALSE,warning=FALSE}
+grounders_liners <- bap %>% filter(bb_type == "ground_ball" | bb_type == "line_drive") %>% group_by(if_fielding_alignment, description) %>%  summarise(count = n()) %>% mutate(perc = count/sum(count))
+ggplot(grounders_liners, aes(x = if_fielding_alignment, y=perc*100, fill = description)) +
+  geom_bar(stat = "identity") +
+  ggtitle("Ground Ball and Line Drive Hits for Each Alignment") +
+  ylab("Percent") +
+  xlab("Infield Alignment") +
+  theme_classic(14)
+```
+
+The proportion still remains the same, even when only looking at ground balls and line drives. Is it possible that the shift really has no effect? Most likely not, as this sample is taken over all batters. Teams will most likely only shift against batters who are known to hit to one side of the field. For example, take a look at ground balls hit by Anthony Rizzo in 2020:
+
+
+```{r, echo = FALSE, message=FALSE,warning=FALSE}
+library(GeomMLBStadiums)
+Rizzo <- read_csv("Rizzo.csv")
+Rizzo <- mlbam_xy_transformation(Rizzo)
+ggplot(Rizzo, aes(x = hc_x_, y = hc_y_)) +
+  geom_spraychart(stadium_transform_coords = TRUE, stadium_segments = "all") +
+  coord_fixed() +
+  ggtitle("Ground Balls by Anthony Rizzo") +
+  theme_void()
+
+```
+
+Since Rizzo rarely hits ground balls to the left side of the field, it makes no sense to position multiple fielders on the left side of second base. Therefore, if teams were to use a standard defensive alignment against Rizzo, it is probable that he would get more hits than if Rizzo were facing the shift. In that sense, the infield shift may be effective against specific batters, which is why it is only utilized 34% of the time. Therefore, we need to focus on these batters to get a sense of the effectiveness of the shift.
+
+```{r, echo = FALSE, message=FALSE,warning=FALSE}
+babip <- bap
+babip$shift <- babip$if_fielding_alignment %>% fct_recode("1" = "Infield shift", "0" = "Standard", "0" = "Strategic")
+babip$shift <- as.numeric(as.character(babip$shift))
+babip$hitshift <- babip$babip_value * babip$shift
+babip$noshift <-as.numeric(as.character(babip$if_fielding_alignment %>% fct_recode("0" = "Infield shift", "1" = "Standard", "1" = "Strategic")))
+babip$standardhit <- babip$babip_value*babip$noshift
+babip <- babip %>% group_by(batter) %>% summarise(hitshift = sum(hitshift),
+                                                shift = sum(shift),
+                                                standardhit = sum(standardhit),
+                                                noshift = sum(noshift))
+babip_filtered <- babip %>% filter(shift > 10, noshift > 10)
+babip_filtered$babip_vs_shift <- babip_filtered$hitshift / babip_filtered$shift
+babip_filtered$babip_vs_other_alignments <- babip_filtered$standardhit / babip_filtered$noshift
+ggplot(babip_filtered, aes(x = babip_vs_other_alignments, y = babip_vs_shift)) +
+  geom_point() +
+  ggtitle("BABIP Against Defensive Alignments") +
+  theme_classic(14)
+```
+
+Interestingly, it seems that in general a player's BABIP (batting average on balls in play) is against the shift is unrelated to his BABIP against other defensive alignments. The chart above used players who put at least 10 balls in play against each alignment. Even when we limit it to players who put at least 50 ball into play against the shift, we see a similar result:
+
+```{r, echo = FALSE, message=FALSE,warning=FALSE}
+babip_filtered <- babip %>% filter(shift > 50, noshift >10)
+babip_filtered$babip_vs_shift <- babip_filtered$hitshift / babip_filtered$shift
+babip_filtered$babip_vs_other_alignments <- babip_filtered$standardhit / babip_filtered$noshift
+ggplot(babip_filtered, aes(x = babip_vs_other_alignments, y = babip_vs_shift)) +
+  geom_point() +
+  ggtitle("BABIP Against Defensive Alignments") +
+  theme_classic(14)
+```
+
+Since these players are the ones who face the shift often, these are the players that defenses must be targeting with the shift. However, it seems that BABIP is not the main reason defenses are employing the shift, given the above graphs. Perhaps there is another metric that teams are using to evaluate the shift.

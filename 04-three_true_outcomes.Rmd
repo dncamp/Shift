@@ -1,0 +1,110 @@
+# Three True Outcomes
+
+One of the complaints about the shift is that it encourages hitters to hit for power rather than contact. Since hitting a hard ground ball into the shift will likely result in an out, hitters instead try to hit it over the shift, thereby making the shift ineffective. 
+
+## Launch Angle
+
+When evaluating if the hitters are trying to hit over the shift, we should first start by taking a look at launch angle(the trajectory of ball after the batter makes contact). The shift excels at fielding ground balls and low line drives, which are the result of low launch angles. By increasing the launch angle, batters can try to hit more fly balls and higher line drives to avoid the shift.
+
+```{r, echo = FALSE, message=FALSE,warning=FALSE}
+library(tidyverse)
+totalshift <- read_csv("totalshift.csv", na = c("", "NA", "null"))
+totalshift <- totalshift %>% drop_na(launch_angle, bb_type)
+totalstandard <- read_csv("totalstandard.csv", na = c("", "NA", "null"))
+totalstandard <- totalstandard %>% drop_na(launch_angle, bb_type)
+totalstrategic <- read_csv("totalstrategic.csv", na = c("", "NA", "null"))
+totalstrategic <- totalstrategic %>% drop_na(launch_angle, bb_type)
+
+total_angle <- rbind(totalshift, totalstandard, totalstrategic)
+
+total_angle$shiftpa <- if_else(total_angle$if_fielding_alignment == "Infield shift", 1, 0)
+total_angle$otherpa <- if_else(total_angle$if_fielding_alignment != "Infield shift", 1, 0)
+total_angle$fly <- if_else(total_angle$bb_type == "fly_ball", 1, 0)
+
+total_angle <- total_angle %>% group_by(batter) %>% summarise(avg_angle = mean(launch_angle),
+                                                              shift_pa = sum(shiftpa),
+                                                              other_pa = sum(otherpa),
+                                                              fly_ball_perc = mean(fly))
+
+total_angle$shift_perc <- total_angle$shift_pa / (total_angle$shift_pa + total_angle$other_pa)
+```
+
+```{r, echo = FALSE, message=FALSE,warning=FALSE}
+library(RColorBrewer)
+total_angle_filtered <- total_angle %>% filter(shift_pa + other_pa > 20)
+
+ggplot(total_angle_filtered, aes(x = shift_perc, y= avg_angle, color = fly_ball_perc)) +
+  geom_point() +
+  scale_color_gradient(low = "Blue", high = "Red") +
+  geom_smooth(method = "lm", se = FALSE) +
+  ggtitle("Launch Angle vs The Shift") +
+  ylab("Average Launch Angle") +
+  xlab("Percentage of Plate Appearances Against the Shift") +
+  labs(color = "Fly Ball Percentage") +
+  theme_classic(14)
+```
+```{r, echo = FALSE, message=FALSE,warning=FALSE}
+correlation <- cor(total_angle_filtered$avg_angle, total_angle_filtered$shift_perc)
+```
+
+It does seem like there is a weak correlation between a batter's average launch angle and how often they hit against the shift. This supports the idea that batters are trying to hit the ball over the shift. Furthermore, the correlation between the two variables is `r correlation`. Understandably, there is also a correlation between a player's average launch angle and the percentage of their batted balls that are fly balls. 
+
+## Three True Outcomes
+
+
+```{r, echo = FALSE, message=FALSE,warning=FALSE}
+shift <- read_csv("totalshift.csv", na = c("", "NA", "null"))
+standard <- read_csv("totalstandard.csv", na = c("", "NA", "null"))
+strategic <- read_csv("totalstrategic.csv", na = c("", "NA", "null"))
+total <- rbind(shift, standard, strategic)
+
+total$tto <- total$events %>% 
+  recode_factor("strikeout" = "strikeout", "home_run" = "home run", "walk" = "walk", .default = "other") %>%
+  fct_relevel("other", "strikeout", "walk","home run")
+```
+
+With the increase in launch angle comes an increase in fly balls. However, fly balls are usually ineffective at getting hits, with one huge exception: the home run. Some fans have criticized modern baseball for lacking action, as many plate appearances now end in either a walk, a strikeout, or a home run. These three events are referred to as the three true outcomes because they don't involve the defense, and therefore don't create any action. Critics of the infield shift feel that it encourages a three true outcome approach to hitting, since the hitters will try to hit home runs to counter the shift. 
+
+```{r, echo = FALSE, message=FALSE,warning=FALSE}
+grouped <- total %>% group_by(if_fielding_alignment, tto) %>% summarise(count = n()) %>% mutate(perc = count/sum(count))
+ggplot(grouped, aes(x = if_fielding_alignment, y=perc*100, fill = tto)) +
+  geom_bar(stat = "identity") +
+  ggtitle("Three True Outcomes") +
+  ylab("percent") +
+  xlab("Infield Alignment") +
+  labs(fill = "Outcome") +
+  theme_classic(14)
+```
+
+It seems that batters hit more home runs, draw more walks, and strike out more against the infield shift than against a standard defensive alignment. This can be attributed to the "home run or bust" mentality: Since fly balls are usually outs if they are not home runs, then its better to wait for a pitch that can be driven out of the park. If the pitch doesn't come, just take the walk or the strikeout. This mentality is clear in the graph below.
+
+```{r, echo = FALSE, message=FALSE,warning=FALSE}
+shiftyears <- tibble(year = 2015:2020, if_alignment = "shift")
+shiftyears$PA <- c(17311, 24686, 22186, 31908, 47254, 22576)
+shiftyears$HR <- c(694, 1039, 1055, 1228, 2098, 931)
+shiftyears$SO <- c(3772, 5381, 5014, 7275, 10861, 5419)
+shiftyears$BB <- c(1738, 2552, 2308, 3179, 4690, 2309)
+shiftyears$TTO <- shiftyears$HR + shiftyears$SO + shiftyears$BB
+shiftyears$TTO_percent <- shiftyears$TTO/shiftyears$PA *100
+
+standardyears <- tibble(year = 2015:2020, if_alignment = "standard")
+standardyears$PA <- c(139425, 139860, 145569, 135923, 120340, 37218)
+standardyears$HR <- c(3548, 4054, 4551, 3907, 4074, 1184)
+standardyears$SO <- c(28532, 29569, 31318, 30141, 27531, 8542)
+standardyears$BB <- c(9682, 10357, 11170, 10225, 9014, 2972)
+standardyears$TTO <- standardyears$HR + standardyears$SO + standardyears$BB
+standardyears$TTO_percent <- standardyears$TTO / standardyears$PA * 100
+
+totalyears <- rbind(shiftyears, standardyears)
+
+ggplot(totalyears, aes(x = year, y = TTO_percent, group = if_alignment, color = if_alignment)) +
+  geom_point() +
+  geom_line() +
+  ggtitle("Percent of Plate Appearances Resulting in HR, SO, or BB") +
+  xlab("Year") +
+  ylab("Percent of Plate Appearances") +
+  labs(color = "Infield Alignment") +
+  theme_classic(14)
+```
+
+While the league in general is trending towards more plate appearances resulting in one of the three true outcomes, the shift clearly results in more three true outcome plate appearances by about four to six percentage points, depending on the year. This divide suggests that batters who face the shift have a different hitting approach than those who do not face the shift often. It seems that the prevalence of the infield shift has caused teams to make changes to their offense.

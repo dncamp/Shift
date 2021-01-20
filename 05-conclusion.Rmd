@@ -1,0 +1,9 @@
+# Conclusion
+
+When looking at offensive performance against the infield shift and standard infield alignments, many statistics appear to show that the shift has very little, if any, effect on the overall performance of the hitter. The reason this happens is that hitters who face the infield shift often tend to have higher average launch angles, which bypasses the shift entirely by hitting the ball in the air. Consequently, this has led to an increase in strikeouts, walks, and home runs against the shift. This emphasis on the three true outcomes could be the result of two scenarios:
+
+  1. Hitters that face the shift often adjusted their swing for larger launch angles, or
+  
+  2. The hitters that were unable to make the adjustment performed poorly against the shift and were replaced
+  
+Given the information presented here, what will happen if MLB bans the infield shift? Likely, there would be little effect on the league. Since the hitters who face the shift often tend to be hitters with high launch angles, banning the shift won't have a major effect on their performance. Furthermore, the league has been trending towards three true outcome hitters for some time, and the trend will likely continue. The infield shift simply accelerated this trend, and banning it will likely not change this trajectory.
